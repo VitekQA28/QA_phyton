@@ -85,29 +85,32 @@ def test_list_to_string_positive_1():
 @pytest.mark.negative_test  
 def test_string():
     stringutils = StringUtils()
-    res = stringutils.capitilize("")
+    res = stringutils.capitilize("") #Пустая строка
     assert res == '' 
 
 @pytest.mark.negative_test  
 def test_trim():
     stringutils = StringUtils()
-    res = stringutils.trim("")
+    res = stringutils.trim(" ") #Строка с пробелом
     assert res == '' 
 
 @pytest.mark.negative_test  
 def test_to_list():
     stringutils = StringUtils()
-    res = stringutils.to_list("")
+    res = stringutils.to_list("") #Пустой список
     assert res == []
 
 
 @pytest.mark.negative_test  
-def test_contains():
+def test_contains_1():
     stringutils = StringUtils()
-    if stringutils.contains("Тест", "a"):
-        res = False
-        assert res == False    
+    assert stringutils.contains("Тест", "ф") == False #Должен принять статус False
 
+@pytest.mark.xfail(strict=True)
+def test_contains_2():
+    stringutils = StringUtils()
+    assert stringutils.contains("", "") == False #Тест должен провалиться
+      
 
 @pytest.mark.negative_test  
 def test_delete_symbol():
@@ -132,6 +135,6 @@ def test_end_with():
 @pytest.mark.negative_test  
 def test_list_to_string():
     stringutils = StringUtils()
-    res = stringutils.list_to_string([])
+    res = stringutils.list_to_string([]) #None
     assert res == ""
 
