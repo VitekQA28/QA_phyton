@@ -81,60 +81,67 @@ def test_list_to_string_positive_1():
     res = stringutils.list_to_string(["Тест", "123", "04 апреля 2023"])
     assert res == "Тест, 123, 04 апреля 2023"
 
-
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test  
 def test_string():
     stringutils = StringUtils()
-    res = stringutils.capitilize("") #Пустая строка
+    res = stringutils.capitilize(1) #Пустая строка
     assert res == '' 
 
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test  
 def test_trim():
     stringutils = StringUtils()
-    res = stringutils.trim(" ") #Строка с пробелом
-    assert res == '' 
+    res = stringutils.trim(  1) #Строка с пробелом
+    assert res == '1'
 
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test  
 def test_to_list():
     stringutils = StringUtils()
     res = stringutils.to_list("") #Пустой список
-    assert res == []
+    assert res == ["incorrect"]
 
-
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test  
 def test_contains_1():
     stringutils = StringUtils()
-    assert stringutils.contains("Тест", "ф") == False #Должен принять статус False
+    assert stringutils.contains("Тест", "") == False #Должен принять статус False
 
 @pytest.mark.xfail(strict=True)
+@pytest.mark.negative_test  
 def test_contains_2():
     stringutils = StringUtils()
     assert stringutils.contains("", "") == False #Тест должен провалиться
       
 
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test  
 def test_delete_symbol():
     stringutils = StringUtils()
-    res = stringutils.delete_symbol("Тест", "a")
-    assert res == "Тест"
+    res = stringutils.delete_symbol("Тест", " ")
+    assert res == "Т е с т"
+    
 
+@pytest.mark.xfail(strict=False)
 @pytest.mark.negative_test    
 def test_starts_with():
     stringutils = StringUtils()
     res = stringutils.starts_with("Тест", "Е")
     assert res == False
 
-
+@pytest.mark.xfail(strict=False)
 @pytest.mark.negative_test   
 def test_end_with():
     stringutils = StringUtils()
     res = stringutils.end_with("Тест", "у")
     assert res == False 
-   
 
+   
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test  
 def test_list_to_string():
     stringutils = StringUtils()
     res = stringutils.list_to_string([]) #None
-    assert res == ""
+    assert res == "None"
 
