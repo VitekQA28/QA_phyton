@@ -123,18 +123,18 @@ def test_delete_symbol():
     assert res == "Т е с т"
     
 
-@pytest.mark.xfail(strict=False)
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test    
 def test_starts_with():
     stringutils = StringUtils()
-    res = stringutils.starts_with("Тест", "Е")
+    res = stringutils.starts_with("Тест", None)
     assert res == False
 
-@pytest.mark.xfail(strict=False)
+@pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test   
 def test_end_with():
     stringutils = StringUtils()
-    res = stringutils.end_with("Тест", "у")
+    res = stringutils.end_with("Тест", 1)
     assert res == False 
 
    
