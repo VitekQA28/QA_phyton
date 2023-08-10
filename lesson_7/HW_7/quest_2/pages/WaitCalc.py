@@ -8,7 +8,7 @@ class Waiting:
         self._driver = browser
 
 
-    def waiting_calc(self):
+    def waiting_calc(self): # Ожидаем 45 секунд и вытаскиваем информацию из поля результат, который должен равняться 15
         WebDriverWait(self._driver, 46).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".screen"), "15"))
         result = self._driver.find_element(By.CSS_SELECTOR, ".screen").text
         return result

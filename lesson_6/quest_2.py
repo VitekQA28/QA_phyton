@@ -8,6 +8,19 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.service import Service as GeckoService
 from webdriver_manager.firefox import GeckoDriverManager
 
+'''
+**Задание 2. Переименовать кнопку**
+
+Напишите скрипт. 
+
+Шаги:
+
+1. Перейдите на сайт: http://uitestingplayground.com/textinput.
+2. Укажите в поле ввода текст SkyPro.
+3. Нажмите на синюю кнопку.
+4. Получите текст кнопки и выведите в консоль *(“SkyPro”).*
+''' 
+
 driver = webdriver.Firefox(service=GeckoService(GeckoDriverManager().install()))
 #driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 driver.get('http://uitestingplayground.com/textinput')

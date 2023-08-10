@@ -8,6 +8,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.service import Service as GeckoService
 from webdriver_manager.firefox import GeckoDriverManager
 
+# Проверка, что после нажатия кнопки - текст "Data loaded with AJAX get request" выйдет через 16 секунд.
+
 driver = webdriver.Firefox(service=GeckoService(GeckoDriverManager().install()))
 #driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 driver.get('http://uitestingplayground.com/ajax')
