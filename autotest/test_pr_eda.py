@@ -1,8 +1,5 @@
-import requests
+
 import pytest
-from bs4 import BeautifulSoup
-import urllib.robotparser
-import xml.etree.ElementTree as ET
 from Pr_eda import Pr_eda
 
 '''
