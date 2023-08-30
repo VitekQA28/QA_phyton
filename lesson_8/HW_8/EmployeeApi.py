@@ -60,6 +60,8 @@ class EmployeeApi:
         my_headers ={}
         my_headers['x-client-token'] = self.get_token() 
         resp = requests.post(self.url+'/company', json=company, headers=my_headers)
+
+        
         return resp.json()
 
     def get_company_id(self, id):
@@ -105,7 +107,7 @@ class EmployeeApi:
             birthdate = self.generate_random_birthdate()
     '''       
     
-    def create_new_employee(self, isActive, new_id, companyId, firstName, lastName, middleName, email, url, phone, birthdate):  
+    def create_new_employee(self, new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive):  
         employee = {
             "id": new_id,
             "firstName": firstName,

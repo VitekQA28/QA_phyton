@@ -6,7 +6,8 @@ import pytest
 
 api = EmployeeApi('https://x-clients-be.onrender.com')
 
-    #1) Получить список сотрудников
+
+#1) Получить список сотрудников
 @pytest.mark.positive_test
 def test_get_all_employee_in_new_company(): 
     result = api.create_company()            #Создаём компанию
@@ -24,7 +25,7 @@ def test_get_all_employee_in_new_company():
     phone = '+79465431321'
     birthdate = '01.01.1990'
     isActive =  True
-    result = api.create_new_employee(isActive, new_id, companyId, firstName, lastName, middleName, email, url, phone, birthdate) 
+    result = api.create_new_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive) 
     emp_after = result['id']                 #Сохраняем ID нового сотрудника в переменную emp_after
     #Заросить ID нового сотрудника
     new_employee = api.get_employee_id(emp_after)  
@@ -34,7 +35,7 @@ def test_get_all_employee_in_new_company():
     new_url = ""
     new_phone = '+79465431333'
     isActive =  True
-    edited = api.edit_employee(emp_after, new_lastName, new_email, new_url, new_phone, isActive) 
+    edited = api.edit_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive) 
     
     assert edited['email'] == new_email     #Проверить, что изменился email
     assert edited['url'] == new_url         #Проверить, что изменился URL
@@ -45,7 +46,7 @@ def test_get_all_employee_in_new_company():
     delete = api.delete(company_id)         #Удалить компанию после теста
 
 
- 
+
 #1) Получить список сотрудников
 @pytest.mark.xfail(strict=True)
 @pytest.mark.negative_test
@@ -88,7 +89,7 @@ def test_get_all_employee_in_new_company_negative():
 
 #Задокументировал изначальный вариант тестов, но они работают только по отдельности, 
 #если запускать их разом - идет конфликт и всё падает.
-'''
+
 #2) Добавить нового сотрудника 
 def test_add_new_employee():
     result = api.create_company()
@@ -103,14 +104,14 @@ def test_add_new_employee():
     phone = '+79465431321'
     birthdate = '01.01.1990'
     isActive =  True
-    result = api.create_new_employee(isActive, new_id, companyId, firstName, lastName, middleName, email, url, phone, birthdate)
+    result = api.create_new_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive)
     emp_id = result['id']
     assert emp_id != 0 #Проверить что создался новый пользователь и его ID не равно 0
     time.sleep(1)
     delete = api.delete(company_id)
 
-#3) Получить сотрудника по ID
 
+#3) Получить сотрудника по ID
 def test_get_employee_id():
     result = api.create_company()
     company_id = result['id']  
@@ -160,7 +161,7 @@ def test_edit_employee():
     assert edited['isActive'] == True
     time.sleep(1)
     delete = api.delete(company_id)
-'''
+
 
 
 
