@@ -3,7 +3,6 @@ from EmployeeApi import EmployeeApi
 import time
 import pytest
 
-
 api = EmployeeApi('https://x-clients-be.onrender.com')
 
 
@@ -19,11 +18,11 @@ def test_get_all_employee_in_new_company():
     firstName = api.generate_random_words(random.randint(1, 1)) 
     lastName = api.generate_random_words(random.randint(1, 1))
     middleName = api.generate_random_words(random.randint(1, 1))
-    email = '123@123mail.com'
+    email = api.generate_random_email()
     companyId = company_id
-    url = 'https://storage.yandexcloud.net/yandexpro/storage/images/originals/qZEALznNzzFc0pO7igFzH1qNsrhvp2pOpvNjVzcv.jpg'
-    phone = '+79465431321'
-    birthdate = '01.01.1990'
+    url = api.generate_random_url()
+    phone = api.generate_random_phone()
+    birthdate = api.generate_random_birthdate()
     isActive =  True
     result = api.create_new_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive) 
     emp_after = result['id']                 #Сохраняем ID нового сотрудника в переменную emp_after
@@ -31,11 +30,11 @@ def test_get_all_employee_in_new_company():
     new_employee = api.get_employee_id(emp_after)  
     #3)Изменить данные сотрудника
     new_lastName = api.generate_random_words(random.randint(1, 1)) 
-    new_email = 'abc@mail.com'
-    new_url = ""
-    new_phone = '+79465431333'
+    new_email = api.generate_random_email()
+    new_url = api.generate_random_url()
+    new_phone = api.generate_random_phone()
     isActive =  True
-    edited = api.edit_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive) 
+    edited = api.edit_employee(emp_after, new_lastName, new_email, new_url, new_phone, isActive) 
     
     assert edited['email'] == new_email     #Проверить, что изменился email
     assert edited['url'] == new_url         #Проверить, что изменился URL
@@ -66,7 +65,7 @@ def test_get_all_employee_in_new_company_negative():
     phone = '+79465431321'
     birthdate = '01.01.1990'
     isActive =  True
-    result = api.create_new_employee(isActive, new_id, companyId, firstName, lastName, middleName, email, url, phone, birthdate) 
+    result = api.create_new_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive) 
     emp_after = result['id']                 #Сохраняем ID нового сотрудника в переменную emp_after
     #Заросить ID нового сотрудника
     new_employee = api.get_employee_id(emp_after)  
@@ -98,11 +97,11 @@ def test_add_new_employee():
     firstName = api.generate_random_words(random.randint(1, 1))
     lastName = api.generate_random_words(random.randint(1, 1))
     middleName = api.generate_random_words(random.randint(1, 1))
-    email = '123@123mail.com'
+    email = api.generate_random_email()
     companyId = company_id
-    url = 'https://storage.yandexcloud.net/yandexpro/storage/images/originals/qZEALznNzzFc0pO7igFzH1qNsrhvp2pOpvNjVzcv.jpg'
-    phone = '+79465431321'
-    birthdate = '01.01.1990'
+    url = api.generate_random_url()
+    phone = api.generate_random_phone()
+    birthdate = api.generate_random_birthdate()
     isActive =  True
     result = api.create_new_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive)
     emp_id = result['id']
@@ -119,11 +118,11 @@ def test_get_employee_id():
     firstName = api.generate_random_words(random.randint(1, 1))
     lastName = api.generate_random_words(random.randint(1, 1))
     middleName = api.generate_random_words(random.randint(1, 1))
-    email = '123@mail.com'
+    email = api.generate_random_email()
     companyId = company_id
-    url = 'https://storage.yandexcloud.net/yandexpro/storage/images/originals/qZEALznNzzFc0pO7igFzH1qNsrhvp2pOpvNjVzcv.jpg'
-    phone = '+79465431321'
-    birthdate = '01.01.1990'
+    url = api.generate_random_url()
+    phone = api.generate_random_phone()
+    birthdate = api.generate_random_birthdate()
     isActive =  True
     #result = api.create_new_employee(new_id, companyId, isActive)
     result = api.create_new_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive)
@@ -142,18 +141,18 @@ def test_edit_employee():
     firstName = api.generate_random_words(random.randint(1, 1))
     lastName = api.generate_random_words(random.randint(1, 1))
     middleName = api.generate_random_words(random.randint(1, 1))
-    email = '123@mail.com'
+    email = api.generate_random_email()
     companyId = company_id
-    url = 'https://storage.yandexcloud.net/yandexpro/storage/images/originals/qZEALznNzzFc0pO7igFzH1qNsrhvp2pOpvNjVzcv.jpg'
-    phone = '+79465431321'
-    birthdate = '01.01.1990'
+    url = api.generate_random_url()
+    phone = api.generate_random_phone()
+    birthdate = api.generate_random_birthdate()
     isActive =  True
     result = api.create_new_employee(new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive)
     emp_id = result['id'] 
     new_lastName = api.generate_random_words(random.randint(1, 1))
-    new_email = 'abc@mail.com'
-    new_url = ""
-    new_phone = '+79465431333'
+    new_email = api.generate_random_email()
+    new_url = api.generate_random_url()
+    new_phone = api.generate_random_phone()
     isActive =  True
     edited = api.edit_employee(emp_id, new_lastName, new_email, new_url, new_phone, isActive)
     assert edited['email'] == new_email
