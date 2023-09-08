@@ -2,6 +2,8 @@ from sqlalchemy import create_engine, inspect, text
 import pytest
 from sqlalchemy.sql import text
 import time
+from sqlalchemy.orm import Session
+from CompanyTable import Company
 
 db_connection_string = "postgresql://x_clients_db_r06g_user:0R1RNWXMepS7mrvcKRThRi82GtJ2Ob58@dpg-cj94hf0eba7s73bdki80-a.oregon-postgres.render.com/x_clients_db_r06g"
 
@@ -11,51 +13,77 @@ def test_db_conection():
     names = inspector.get_table_names()
     assert names[0] == 'company'
 
-
 def test_select():
     db = create_engine(db_connection_string)
     with db.connect() as conn:
         statement = text('SELECT * FROM company')
         rows = conn.execute(statement).fetchall()
-        rows1 = rows[0]
-        
+        rows1 = rows[0]        
         assert rows1[0] == 619
         assert rows1[4] == "FQF_Test"
         assert len(rows) > 0
 
-def test_select_1_row():
-    db = create_engine(db_connection_string)
-    with db.connect() as conn:
-        statement = text('SELECT * FROM company where id = :company_id')
-        params = {
-            "company_id": 1419,
-            "isActive" : True
-            }
-        rows = conn.execute(statement, params).fetchall()
-    assert len(rows) == 1
-    assert rows[0][4] == 'QA Auto'
-
-
 def test_insert():
     db = create_engine(db_connection_string)
+    session = Session(db)
+    new_company = Company(name='Test Company_VB')
+    session.add(new_company)
+    session.commit()
+    return new_company.id
+
+
+def test_select_1_row():
+    db = create_engine(db_connection_string)
+    session = Session(db)
     with db.connect() as conn:
-        name_company = {"new_name" : 'Test Company_VB'}
-        sql = text("insert into company(\"name\") values (:new_name)")
-        add_new = conn.execute(sql, name_company)
-        time.sleep(2)
-        select_sql = text("SELECT * FROM company WHERE \"name\" = :new_name")
-        rows = conn.execute(select_sql, name_company).fetchall()
-        print(rows[0][0])
-        assert len(rows) >= 1
+        company_id = test_insert()
+        statement = text('SELECT * FROM company where id = :company_id')
+        params = {"company_id": company_id}
+        rows = conn.execute(statement, params).fetchall()
+        assert len(rows) == 1
         assert rows[0][4] == 'Test Company_VB'
+        time.sleep(2)
+        sql_delete = text("DELETE FROM company WHERE id = :company_id")
+        params_delete = {"company_id": company_id}
+        conn.execute(sql_delete, params_delete)
+        session.commit()
 
 def test_update():
     db = create_engine(db_connection_string)
+    session = Session(db)
     with db.connect() as conn:
-        sql = text("UPDATE company SET description = :descr WHERE id = :id")
-        params = {"descr": 'abracadabra', "id": 1419}
-        rows = conn.execute(sql, params)
-        
-        
+        company_id = test_insert()
+        sql_update = text("UPDATE company SET description = :descr WHERE id = :id")
+        params_update = {"descr": 'abracadabra_test', "id": company_id}
+        conn.execute(sql_update, params_update)
+        session.commit()
+        sql_select = text("SELECT description FROM company WHERE id = :id")
+        params_select = {"id": company_id}
+        result = conn.execute(sql_select, params_select)
+        row = result.fetchone()
+        updated_description = row[0]
+        assert updated_description == "abracadabra_test"
+        time.sleep(2)
+        sql_delete = text("DELETE FROM company WHERE id = :company_id")
+        params_delete = {"company_id": company_id}
+        conn.execute(sql_delete, params_delete)
+        session.commit()
 
-    
+        
+def test_delete():
+    db = create_engine(db_connection_string)
+    session = Session(db)
+    with db.connect() as conn:
+        company_id = test_insert()
+        sql_delete = text("DELETE FROM company WHERE id = :company_id")
+        params_delete = {"company_id": company_id}
+        conn.execute(sql_delete, params_delete)
+        session.commit()
+        # Проверяем, что компания больше не существует
+        sql_select = text("SELECT * FROM company WHERE id = :id")
+        params_select = {"id": company_id}
+        result = conn.execute(sql_select, params_select)
+        assert result.fetchone() is None, "Компания не удалена из базы данных"
+
+   
+   
