@@ -26,7 +26,7 @@ def test_select():
 def test_insert():
     db = create_engine(db_connection_string)
     session = Session(db)
-    new_company = Company(name='Test Company_VB')
+    new_company = Company(name='Test Company_VBA')
     session.add(new_company)
     session.commit()
     return new_company.id
@@ -34,29 +34,27 @@ def test_insert():
 
 def test_select_1_row():
     db = create_engine(db_connection_string)
-    session = Session(db)
     with db.connect() as conn:
         company_id = test_insert()
         statement = text('SELECT * FROM company where id = :company_id')
         params = {"company_id": company_id}
         rows = conn.execute(statement, params).fetchall()
         assert len(rows) == 1
-        assert rows[0][4] == 'Test Company_VB'
+        assert rows[0][4] == 'Test Company_VBA'
         time.sleep(2)
         sql_delete = text("DELETE FROM company WHERE id = :company_id")
         params_delete = {"company_id": company_id}
         conn.execute(sql_delete, params_delete)
-        session.commit()
+        conn.commit()
 
 def test_update():
     db = create_engine(db_connection_string)
-    session = Session(db)
     with db.connect() as conn:
         company_id = test_insert()
         sql_update = text("UPDATE company SET description = :descr WHERE id = :id")
         params_update = {"descr": 'abracadabra_test', "id": company_id}
         conn.execute(sql_update, params_update)
-        session.commit()
+        conn.commit()
         sql_select = text("SELECT description FROM company WHERE id = :id")
         params_select = {"id": company_id}
         result = conn.execute(sql_select, params_select)
@@ -67,18 +65,17 @@ def test_update():
         sql_delete = text("DELETE FROM company WHERE id = :company_id")
         params_delete = {"company_id": company_id}
         conn.execute(sql_delete, params_delete)
-        session.commit()
+        conn.commit()
 
         
 def test_delete():
     db = create_engine(db_connection_string)
-    session = Session(db)
     with db.connect() as conn:
         company_id = test_insert()
         sql_delete = text("DELETE FROM company WHERE id = :company_id")
         params_delete = {"company_id": company_id}
         conn.execute(sql_delete, params_delete)
-        session.commit()
+        conn.commit()
         # Проверяем, что компания больше не существует
         sql_select = text("SELECT * FROM company WHERE id = :id")
         params_select = {"id": company_id}
