@@ -3,7 +3,6 @@ import pytest
 from sqlalchemy.sql import text
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import Session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
