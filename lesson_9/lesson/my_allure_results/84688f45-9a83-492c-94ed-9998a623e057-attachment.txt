@@ -1,0 +1,17 @@
+[31m[1mERROR   [0m sqlalchemy.pool.impl.QueuePool:base.py:1010 Exception during reset or similar
+Traceback (most recent call last):
+  File "C:\Users\Пользователь\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\_pytest\fixtures.py", line 596, in _get_active_fixturedef
+    return self._fixture_defs[argname]
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'request'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Пользователь\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 988, in _finalize_fairy
+    fairy._reset(
+  File "C:\Users\Пользователь\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 1436, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\Пользователь\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\default.py", line 691, in do_rollback
+    dbapi_connection.rollback()
+psycopg2.OperationalError: SSL connection has been closed unexpectedly
