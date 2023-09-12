@@ -81,6 +81,7 @@ def test_update():
         params_delete = {"company_id": company_id}
         conn.execute(sql_delete, params_delete)
         conn.commit()
+        #
 
 
 
