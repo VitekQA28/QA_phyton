@@ -1,19 +1,16 @@
-from sqlalchemy import create_engine, inspect, text
-import pytest
-from sqlalchemy.sql import text
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
+
 Base = declarative_base()
+
 
 class Company(Base):
     __tablename__ = 'company'
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
-
+'''
 class CompanyTable:
     def __init__(self, connection_string):
         self.db = create_engine(connection_string)
@@ -45,4 +42,4 @@ class CompanyTable:
             statement = text('select max(id) from company')
             return conn.execute(statement).fetchall()[0][0]
 
-
+'''

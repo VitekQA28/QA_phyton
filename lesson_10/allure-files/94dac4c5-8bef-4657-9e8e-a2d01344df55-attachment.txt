@@ -1,0 +1,1 @@
+b"UPDATE company SET description = 'abracadabra_test' WHERE id = 1595"

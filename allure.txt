@@ -1,15 +1,20 @@
 #Запускаем отчет на VCS
-pytest --alluredir=C:\Users\Пользователь\Documents\GitHub\QA_phyton\lesson_9\lesson\my_allure_results
+pytest --alluredir=C:\Users\Пользователь\Documents\GitHub\QA_phyton\lesson_10\allure-files
+Или 
+python -m pytest --alluredir=.\allure-files
 
 linux
 #запуск комманды для формирования отчета
-./allure-2.9.0/bin/allure serve ./lesson_9/lesson/my_allure_results/
+allure generate /mnt/c/Users/Пользователь/Documents/GitHub/QA_phyton/lesson_10/allure-files
+allure serve /mnt/c/Users/Пользователь/Documents/GitHub/QA_phyton/lesson_10/allure-files
+
+
 
 #получаем путь к отчету
 Server started at <http://127.0.1.1:37887/>. Press <Ctrl+C> to exit
-#заменяем <http://127.0.1.1:37887/> на http://localhost:37887/index.html 
+#заменяем <http://127.0.1.1:37887/> на http://localhost:36773/index.html 
 И открываем в браузере.
 
 Парикмахерское барбер кресло для барбершопа DY-31905
 Парикмахерское барбер кресло 3308 для барбершопа
-Парикмахерское барбер кресло 3309 для барбершопа
+	
