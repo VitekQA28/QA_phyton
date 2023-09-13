@@ -21,13 +21,13 @@ def test_status_page(): #все страницы сайта открываютс
     test_website = Pr_eda()
     test_website.test_status_page()
 
-def test_check_meta_tags(): #Проверка наличия мета-тегов в HTML-коде страницы
+def test_meta_tags(): #Проверка наличия мета-тегов в HTML-коде страницы
     test_website = Pr_eda()
-    test_website.check_meta_tags()
+    test_website.test_meta_tags()
 
 def test_footer_element(): #Проверка наличия определенного элемента на странице, например footer сайта
     test_website = Pr_eda()
-    test_website.footer_element()
+    test_website.test_footer_element()
 
 def test_sitemap(): #есть ли на сайте sitemap и не пустой ли он
     test_website = Pr_eda()

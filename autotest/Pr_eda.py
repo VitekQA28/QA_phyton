@@ -31,7 +31,8 @@ class Pr_eda:
             resp = requests.get(base_url + page)
             assert resp.status_code == 200, f"Страница {page} недоступна"
 
-    def check_meta_tags(self):
+    def test_meta_tags(self):
+        checked_pages = [] # Создаем список для отслеживания протестированных страниц
         for page in pages:
             resp = requests.get(base_url + page)
             assert resp.status_code == 200, f"Страница {page} недоступна"
@@ -44,8 +45,11 @@ class Pr_eda:
                 assert element is not None, f"Не удалось найти элемент <meta> с атрибутом name='{attribute}' на странице {page}"
                 content = element.get("content")
                 assert content != "", f"Атрибут 'content' элемента <meta> с атрибутом name='{attribute}' пустой на странице {page}"
+            checked_pages.append(page)  # Добавляем протестированную страницу в список
+        assert len(checked_pages) != len(pages), f"Не все страницы были протестированы. Не протестированные страницы: {set(pages) - set(checked_pages)}"
 
-    def footer_element(self):
+
+    def test_footer_element(self):
         for page in pages:
             resp = requests.get(base_url + page)
             assert resp.status_code == 200, f"Страница {page} недоступна"
