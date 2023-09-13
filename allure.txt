@@ -15,6 +15,10 @@ Server started at <http://127.0.1.1:37887/>. Press <Ctrl+C> to exit
 #заменяем <http://127.0.1.1:37887/> на http://localhost:36773/index.html 
 И открываем в браузере.
 
-Парикмахерское барбер кресло для барбершопа DY-31905
-Парикмахерское барбер кресло 3308 для барбершопа
+
+
+
+python -m pytest --alluredir=.\allure-files
+allure generate allure-files -o allure-report
+allure open allure-report
 	

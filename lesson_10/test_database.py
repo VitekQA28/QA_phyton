@@ -119,6 +119,8 @@ def test_update():
             conn.commit()
         
 
+        
+
 @allure.suite("Работа с таблицей company")
 @allure.epic("Компании")
 @allure.severity("blocker")
