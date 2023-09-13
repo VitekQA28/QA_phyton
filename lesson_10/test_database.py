@@ -6,8 +6,10 @@ from sqlalchemy.orm import Session
 from CompanyTable import Company
 import allure 
 
+
 db_connection_string = "postgresql://x_clients_db_r06g_user:0R1RNWXMepS7mrvcKRThRi82GtJ2Ob58@dpg-cj94hf0eba7s73bdki80-a.oregon-postgres.render.com/x_clients_db_r06g"
 
+@allure.suite("Работа с таблицей company")
 @allure.epic("Компании")
 @allure.severity("blocker")
 @allure.id("Skypro-1")
@@ -22,6 +24,7 @@ def test_db_conection():
     with allure.step("Проверка названия таблицы"):
         assert names[0] == 'company'
 
+@allure.suite("Работа с таблицей company")
 @allure.epic("Компании")
 @allure.id("Skypro-2")
 @allure.feature("CREATE")
@@ -38,7 +41,7 @@ def test_select():
         assert rows1[4] == "FQF_Test"
         assert len(rows) > 0
 
-
+@allure.suite("Работа с таблицей company")
 @allure.epic("Компании")
 @allure.severity("blocker")
 @allure.id("Skypro-3")
@@ -53,7 +56,7 @@ def test_insert():
     session.commit()
     return new_company.id
     
-
+@allure.suite("Работа с таблицей company")
 @allure.epic("Компании")
 @allure.severity("normal")
 @allure.id("Skypro-4")
@@ -80,7 +83,7 @@ def test_select_1_row():
             conn.execute(sql_delete, params_delete)
             conn.commit()
 
-
+@allure.suite("Работа с таблицей company")
 @allure.epic("Компании")
 @allure.severity("critical")
 @allure.id("Skypro-5")
@@ -116,7 +119,7 @@ def test_update():
             conn.commit()
         
 
-
+@allure.suite("Работа с таблицей company")
 @allure.epic("Компании")
 @allure.severity("blocker")
 @allure.id("Skypro-6")
