@@ -5,14 +5,49 @@ import string
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
+import allure 
 
-Base = declarative_base()
+@allure.suite("Работа с данными через API")
+class EmployeeApi:
+  
+    @allure.title("Генерация рандомного текста {num_words}")
+    def generate_random_words(self, num_words: int)->str:  
+        """
+        Эта функция генерирует рандомный текст 
+        """
+        fake = Faker()
+        words = [fake.word() for _ in range(num_words)]
+        return ' '.join(words)
+    
 
-class Company(Base):
-    __tablename__ = 'company'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
+    @allure.title("Генерация рандомного email")
+    def generate_random_email(self)->str:
+        """
+        Эта функция генерирует рандомный email 
+        """
+        random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
+        email = f"{random_string}@example.com"
+        return email
+    
+    @allure.title("Генерация рандомного номера телефона")
+    def generate_random_phone(self)->str:
+        """
+        Эта функция генерирует рандомный номер телефона 
+        """
+        phone = '+7' + ''.join(random.choices(string.digits, k=10))
+        return phone
+    
+    @allure.title("Генерация рандомного URL")
+    def generate_random_url(self)->str:
+        """
+        Эта функция генерирует рандомный URL
+        """
+        random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
+        url = f"https://example.com/{random_string}"
+        return url
 
+
+'''
 class Employee(Base):
     __tablename__ = 'employee'
     id = Column(Integer, primary_key=True)
@@ -26,51 +61,27 @@ class CompanyTable:
         with self.db.connect() as conn:
             statement = text('SELECT * FROM company')
             return conn.execute(statement).fetchall()
+'''   
 
-class EmployeeApi:
-  
-
-    def __init__(self, url):
+'''
+      @allure.title("Получение новой организации по ID")
+    def __init__(self, url)->None:
         self.url = url
 
-    def get_company_list(self, params_to_add = None):
+    @allure.title("Получение новой организации по ID")
+    def get_company_list(self, params_to_add = None)->list:
         resp = requests.get(self.url +'/company', params= params_to_add) 
         return resp.json()
- 
-    def get_token(self, user = 'leonardo', password = 'leads' ):    
+    
+    @allure.title("Получение новой организации по ID")
+    def get_token(self, user = 'leonardo', password = 'leads' )->str:    
         creds = {
             'username' : user,
             'password' : password
         }
         resp = requests.post(self.url+'/auth/login', json=creds) 
         return resp.json()["userToken"]
-    
-    def generate_random_words(self, num_words):  
-        fake = Faker()
-        words = [fake.word() for _ in range(num_words)]
-        return ' '.join(words)
-
-    def generate_random_email(self):
-        random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
-        email = f"{random_string}@example.com"
-        return email
-
-    def generate_random_phone(self):
-        phone = '+7' + ''.join(random.choices(string.digits, k=10))
-        return phone
-    
-    def generate_random_url(self):
-        random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
-        url = f"https://example.com/{random_string}"
-        return url
-    
-    def generate_random_birthdate(self):
-        day = random.randint(1, 28)  # выбираем случайный день от 1 до 28
-        month = random.randint(1, 12)  # выбираем случайный месяц от 1 до 12
-        year = random.randint(1900, 2022)  # выбираем случайный год от 1900 до 2022
-        birthdate = f"{year}-{month:02d}-{day:02d}"
-        return birthdate
-
+        
     def create_company(self, name = None, description = None):
         if name is None:
             name = self.generate_random_words(random.randint(1, 2))
@@ -113,7 +124,8 @@ class EmployeeApi:
         resp = requests.patch(self.url +'/employee/'+str(new_id), headers=my_headers, json=employee)
         return resp.json()   
      
-    '''
+    
+
     def create_new_employee(self, isActive, new_id, companyId, firstName =None, lastName=None, middleName=None, email=None, url=None, phone=None, birthdate=None):
         if firstName is None:
             firstName = self.generate_random_words(random.randint(1, 1))
@@ -129,7 +141,7 @@ class EmployeeApi:
             phone = self.generate_random_phone()
         if birthdate is None:
             birthdate = self.generate_random_birthdate()
-    '''       
+           
     
     def create_new_employee(self, new_id, firstName, lastName, middleName, companyId, email, url, phone, birthdate, isActive):  
         employee = {
@@ -148,9 +160,27 @@ class EmployeeApi:
         my_headers['x-client-token'] = self.get_token() 
         resp = requests.post(self.url+'/employee', json=employee, headers=my_headers)
         return resp.json()
-
-    def delete(self, id):
+        
+        
+        def delete(self, id):
         my_headers ={}
         my_headers['x-client-token'] = self.get_token()
         resp = requests.get(self.url +'/company/delete/'+str(id), headers=my_headers)
         return resp.json()
+        '''
+
+'''
+class Employee(Base):
+    __tablename__ = 'employee'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+class CompanyTable:
+    def __init__(self, connection_string):
+        self.db = create_engine(connection_string)
+
+    def get_companies(self):        
+        with self.db.connect() as conn:
+            statement = text('SELECT * FROM company')
+            return conn.execute(statement).fetchall()
+'''
