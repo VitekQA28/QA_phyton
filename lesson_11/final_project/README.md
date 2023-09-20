@@ -2,7 +2,7 @@
 
 ## Шаблоны для автоматизации тестирования на python
 
-### Шаги:
+### Шаги
 
 1. Склонировать проект (git clone https://)
 2. Установить все зависимости
@@ -11,7 +11,7 @@
 5. Cгенерировать отчет (allure generate allure-files -o allure-report)
 6. Открыть отчет в браузере (allure open allure-report)
 
-### Стэк:
+### Стэк
 
 - pytest
 - selenium
@@ -20,22 +20,22 @@
 - allure
 - config
 
-### Структура:
+### Структура
 
 - ./auto - тесты
 - ./pages - описание страниц
 - ./api - хелперы для работы с API
 - ./db - хелперы для работы с БД
 - ./configuration - провайдер настроек
-    - test_config.ini - настройки для тестов 
+  - test_config.ini - настройки для тестов
 - ./testdata - провайдер тестовых данных
-    - test_data.json
+  - test_data.json
 
-### Полезные ссылки:
+### Полезные ссылки
 
-- [Подсказка по marcdown] (https://www.markdownguide.org/cheat-sheet/)
-- [Генератор файла .gitignore] (https://www.toptal.com/developers/gitignore)
-- [Установка аллюр на ПК] (https://docs.qameta.io/allure-report/)
+- [Подсказка по marcdown] (<https://www.markdownguide.org/cheat-sheet/>)
+- [Генератор файла .gitignore] (<https://www.toptal.com/developers/gitignore>)
+- [Установка аллюр на ПК] (<https://docs.qameta.io/allure-report/>)
 
 ### Библиотеки (!)
 
@@ -45,7 +45,7 @@
 - pip install allure-pytest
 - pip install requests
 
-### Команды для теста:
+### Команды для теста
 
 1. Запуск теста  python -m pytest
 2. Сгенерировать файлы теста python -m pytest --alluredir=.\allure-files
