@@ -33,9 +33,9 @@
 
 ### Полезные ссылки
 
-- [Подсказка по marcdown] (<https://www.markdownguide.org/cheat-sheet/>)
-- [Генератор файла .gitignore] (<https://www.toptal.com/developers/gitignore>)
-- [Установка аллюр на ПК] (<https://docs.qameta.io/allure-report/>)
+- [Подсказка по marcdown] (https://www.markdownguide.org/cheat-sheet/)
+- [Генератор файла .gitignore] (https://www.toptal.com/developers/gitignore)
+- [Установка аллюр на ПК] (https://docs.qameta.io/allure-report/)
 
 ### Библиотеки (!)
 
