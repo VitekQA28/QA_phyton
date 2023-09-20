@@ -7,10 +7,14 @@ def test_create_board(api_client: BoardApi, delete_board: dict, test_data: dict)
     org_id = test_data.get("org_id")
     board_list_before = api_client.get_all_boards_by_org_id(org_id)
     resp = api_client.create_board("Test board VB")
+    board_id = resp.get("id")
+    response = api_client.get_board_lists(board_id)
+    add_first_list = api_client.add_card_to_first_list(board_id, "List №1")
     delete_board["board_id"] = resp.get("id")
     board_list_after = api_client.get_all_boards_by_org_id(org_id)
     with allure.step("Проверить, колличество досок стало на больше на 1"):
         assert len(board_list_after) - len(board_list_before) == 1 
+
 
 @pytest.mark.api_test
 def test_delete_board(api_client: BoardApi, board_id: str, test_data: dict ):
