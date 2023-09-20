@@ -9,6 +9,7 @@ from configuration.ConfigProvider import ConfigProvider
 from webdriver_manager.firefox import GeckoDriverManager
 from testdata.DataProvider import DataProvider
 
+
 @pytest.fixture()
 def browser():
     with allure.step("Открыть и настроить браузер"):

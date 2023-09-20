@@ -47,7 +47,9 @@
 
 ### Команды для теста
 
-1. Запуск теста  python -m pytest
-2. Сгенерировать файлы теста python -m pytest --alluredir=.\allure-files
-3. Сгенерировать отчет на основе файлов allure generate allure-files -o allure-report
-4. Запустить отчет allure open allure-report
+1. Запуск всех тестов (python -m pytest)
+2. Запуск только ui тестов (python -m pytest -m ui)
+3. Запуск только api тестов (python -m pytest -m api)
+4. Сгенерировать файлы теста python (-m pytest --alluredir=.\allure-files)
+5. Сгенерировать отчет на основе файлов (allure generate allure-files -o allure-report)
+6. Запустить отчет (allure open allure-report)
