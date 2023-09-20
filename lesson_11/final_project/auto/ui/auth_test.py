@@ -2,14 +2,13 @@ from page.AuthPage import AuthPage
 from page.MainPage import MainPage
 import time
 import allure
-import pytest
 
 
-#@pytest.mark.skip
-def test_auth(browser):
-    email = "another.yola@gmail.com"
-    password = "Vitechkin90"
-    username = "Viktor Budnik"
+
+def test_auth(browser, test_data:dict):
+    email = test_data.get("email")
+    password = test_data.get("password")
+    username = test_data.get("username")
     auth_page = AuthPage(browser)
     auth_page.go()
     auth_page.login_as(email, password)

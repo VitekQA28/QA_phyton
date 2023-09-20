@@ -3,6 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from configuration.ConfigProvider import ConfigProvider
+from testdata.DataProvider import DataProvider
 import allure
 
 class MainPage:
@@ -10,6 +11,7 @@ class MainPage:
     def __init__ (self, driver: WebDriver) ->None:
         self.__driver = driver
         self.url = ConfigProvider().get("ui", "base_url")
+        self.data = DataProvider()
         self.__url = self.url+"/u/viktorbudnik/boards"
 
     @allure.step("Перейти на страницу авторизации")
@@ -35,7 +37,7 @@ class MainPage:
     def add_cookie(self):
         cookie = {
             "name":"token",
-            "value":"634e5e18c2571b0467a1e4a1/ATTSxiXkUOtI9qaunq65ufLDIFvBGCuZDhYCFToNQGkwCK9s8RmoDo9st5jl6opBh6YCAC89E034"
+            "value":self.data.get_token()
         }
         self.__driver.add_cookie(cookie)
 

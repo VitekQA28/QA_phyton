@@ -7,10 +7,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from api.BoardApi import BoardApi
 from configuration.ConfigProvider import ConfigProvider
 from webdriver_manager.firefox import GeckoDriverManager
-#from selenium.webdriver.chrome.options import Options
+from testdata.DataProvider import DataProvider
 
 @pytest.fixture()
-
 def browser():
     with allure.step("Открыть и настроить браузер"):
         timeout = ConfigProvider().getint("ui", "timeout")
@@ -29,9 +28,13 @@ def browser():
         browser.quit()
 
 @pytest.fixture()
+def test_data():
+    return DataProvider()
+
+@pytest.fixture()
 def api_client()->BoardApi:
-    url = ConfigProvider().get("api", "base_url")
-    return BoardApi(url, "634e5e18c2571b0467a1e4a1/ATTSxiXkUOtI9qaunq65ufLDIFvBGCuZDhYCFToNQGkwCK9s8RmoDo9st5jl6opBh6YCAC89E034")
+    DataProvider().get_token()
+    return BoardApi(ConfigProvider().get("api", "base_url"), DataProvider().get_token())
 
 
 @pytest.fixture()
@@ -40,14 +43,15 @@ def api_client_no_auth()->BoardApi:
 
 @pytest.fixture()
 def board_id()->str:
-    api = BoardApi(ConfigProvider().get("api", "base_url"), "634e5e18c2571b0467a1e4a1/ATTSxiXkUOtI9qaunq65ufLDIFvBGCuZDhYCFToNQGkwCK9s8RmoDo9st5jl6opBh6YCAC89E034")
-    resp = api.create_board("Test board to be deleted").get("id")
+    api = BoardApi(ConfigProvider().get("api", "base_url"), DataProvider().get_token())
+    with allure.step("Предварительно создать доску"):
+        resp = api.create_board("Test board to be deleted").get("id")
     return resp
     
 @pytest.fixture()
 def delete_board()->str:
     dictionary = {"board_id":""}
     yield dictionary
-
-    api = BoardApi(ConfigProvider().get("api", "base_url"), "634e5e18c2571b0467a1e4a1/ATTSxiXkUOtI9qaunq65ufLDIFvBGCuZDhYCFToNQGkwCK9s8RmoDo9st5jl6opBh6YCAC89E034")
-    api.delete_board_id(dictionary.get("board_id"))
+    with allure.step("Удалить доску"):
+        api = BoardApi(ConfigProvider().get("api", "base_url"), DataProvider().get_token())
+        api.delete_board_id(dictionary.get("board_id"))
