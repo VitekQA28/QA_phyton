@@ -4,7 +4,7 @@ import time
 import allure
 import pytest
 
-@pytest.mark.ui
+@pytest.mark.ui_test
 def test_auth(browser, test_data:dict):
     email = test_data.get("email")
     password = test_data.get("password")
