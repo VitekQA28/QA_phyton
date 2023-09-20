@@ -2,7 +2,7 @@ from api.BoardApi import BoardApi
 import allure
 import pytest
 
-
+@pytest.mark.api
 def test_create_board(api_client: BoardApi, delete_board: dict, test_data: dict):
     org_id = test_data.get("org_id")
     board_list_before = api_client.get_all_boards_by_org_id(org_id)
@@ -12,7 +12,7 @@ def test_create_board(api_client: BoardApi, delete_board: dict, test_data: dict)
     with allure.step("Проверить, колличество досок стало на больше на 1"):
         assert len(board_list_after) - len(board_list_before) == 1 
 
-
+@pytest.mark.api
 def test_delete_board(api_client: BoardApi, board_id: str, test_data: dict ):
     """
     Эта функция удаляет доску
