@@ -6,6 +6,8 @@
 
 1. Склонировать проект (git clone https://)
 2. Установить все зависимости
+  a. Для опредения зависимостей выполняется комманда (python -m pip freeze > requirements.txt)
+  b. Для автоматической установки зависимостей выполняется комманда (python -m pip install -r requirements.txt)
 3. Запустить тесты (pytest)
 4. Cгенерировать файлы для отчета (python -m pytest --alluredir=.\allure-files)
 5. Cгенерировать отчет (allure generate allure-files -o allure-report)
@@ -15,10 +17,12 @@
 
 - pytest
 - selenium
+- webdriver-manager
 - requests
 - _sqlalchemy_
 - allure
-- config
+- configparser
+- json
 
 ### Структура
 
@@ -33,17 +37,10 @@
 
 ### Полезные ссылки
 
-- [Подсказка по marcdown] (https://www.markdownguide.org/cheat-sheet/)
-- [Генератор файла .gitignore] (https://www.toptal.com/developers/gitignore)
-- [Установка аллюр на ПК] (https://docs.qameta.io/allure-report/)
-
-### Библиотеки (!)
-
-- pip install pytest
-- pip install selenium
-- pip install webdriver-manager
-- pip install allure-pytest
-- pip install requests
+- [Подсказка по marcdown] (<https://www.markdownguide.org/cheat-sheet/>)
+- [Генератор файла .gitignore] (<https://www.toptal.com/developers/gitignore>)
+- [Установка аллюр на ПК] (<https://docs.qameta.io/allure-report/>)
+- [Документация pip freeze] (<https://pip.pypa.io/en/stable/cli/pip_freeze/>)
 
 ### Команды для теста
 
