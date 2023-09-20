@@ -5,7 +5,7 @@ import allure
 import pytest
 
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_auth(browser):
     email = "another.yola@gmail.com"
     password = "Vitechkin90"
