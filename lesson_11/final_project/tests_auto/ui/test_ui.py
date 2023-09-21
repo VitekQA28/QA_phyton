@@ -3,6 +3,7 @@ from page.MainPage import MainPage
 import time
 import allure
 import pytest
+from page.TrelloPage import TrelloPage
 
 @pytest.mark.ui_test
 def test_auth(browser, test_data:dict):
@@ -26,6 +27,17 @@ def test_auth(browser, test_data:dict):
             assert info[0] == username
         with allure.step("Почта пользователя должна быть "+email):
             assert info[1] == email
-   
 
 
+@pytest.mark.ui_test
+@pytest.mark.parametrize("board_name", ["Test Board 1"])
+def test_create_board(browser, board_name, test_data:dict):
+    email = test_data.get("email")
+    password = test_data.get("password")
+    trello_page = TrelloPage(browser)
+    
+    with allure.step("Перейти на страницу авторизации и создать доску"):
+        trello_page.go_and_create_board(email, password, board_name)
+    
+    with allure.step("Проверить, что доска успешно создана"):
+        assert trello_page.is_board_created(board_name)
