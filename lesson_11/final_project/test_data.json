@@ -9,5 +9,6 @@
     "email" : "another.yola@gmail.com",
     "password" : "Vitechkin90",
     "username" : "Viktor Budnik",
-    "org_id" : "634e5f7f96fd490099b28bf9"
+    "org_id" : "634e5f7f96fd490099b28bf9",
+    "base_url" : "https://trello.com/u/viktorbudnik/boards"
 }

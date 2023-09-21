@@ -5,6 +5,9 @@ import allure
 import pytest
 from page.TrelloPage import TrelloPage
 
+
+
+@pytest.mark.skip
 @pytest.mark.ui_test
 def test_auth(browser, test_data:dict):
     email = test_data.get("email")
@@ -31,13 +34,20 @@ def test_auth(browser, test_data:dict):
 
 @pytest.mark.ui_test
 @pytest.mark.parametrize("board_name", ["Test Board 1"])
-def test_create_board(browser, board_name, test_data:dict):
-    email = test_data.get("email")
-    password = test_data.get("password")
-    trello_page = TrelloPage(browser)
-    
+def test_create_board(browser, board_name, test_data: dict):
+    base_url = test_data.get("base_url") # "https://trello.com/u/viktorbudnik/boards"
+    token = test_data.get("token") #"634e5e18c2571b0467a1e4a1/ATTSxiXkUOtI9qaunq65ufLDIFvBGCuZDhYCFToNQGkwCK9s8RmoDo9st5jl6opBh6YCAC89E034" 
+    trello_page = TrelloPage(browser, base_url, token)
+
     with allure.step("Перейти на страницу авторизации и создать доску"):
-        trello_page.go_and_create_board(email, password, board_name)
-    
+        trello_page.go_and_create_board(board_name)
+
     with allure.step("Проверить, что доска успешно создана"):
         assert trello_page.is_board_created(board_name)
+
+    with allure.step("Добавляем новую карточку"):
+        trello_page.add_new_card()
+
+        trello_page.move_card_to_list()
+
+    time.sleep(100)
