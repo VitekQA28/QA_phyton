@@ -67,25 +67,34 @@ class TrelloPage:
         
     @allure.step("Создать новую карточку в первом листе")    
     def add_new_card(self):
-        WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea")))
-        self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea").send_keys("Test_card 1")
-        WebDriverWait(self.__driver, 10)
-        self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[2]/div/input").click()
+        with allure.step("В поле вводим название карточки Test_card 1"):
+            WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea")))
+            self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea").send_keys("Test_card 1")
+        
+        with allure.step("Нажимаем на кнопку добавить карточку"):
+            WebDriverWait(self.__driver, 10)
+            self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[2]/div/input").click()
 
     @allure.step("Именяем название карточки")      
     def update_name(self):
-        card_title = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/a/div[3]")
-        card_title.click()
-        WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[3]/div[1]/textarea")))
-        card_title_field = self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[3]/div[1]/textarea")
-        card_title_field.click()
+        with allure.step("Нажимаем на редактироваие карточки"):
+            card_title = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/a/div[3]")
+            card_title.click()
+            WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[3]/div[1]/textarea")))
+        with allure.step("Нажимаем на название карточки"):
+            card_title_field = self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[3]/div[1]/textarea")
+            card_title_field.click()
         time.sleep(2)
-        card_title_field.clear()
+        with allure.step("Очищаем содержимое поля"):
+            card_title_field.clear()
         time.sleep(2)
-        card_title_field.send_keys("New Card Title")
-        card_title_field.send_keys(Keys.RETURN)
-        WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a")))
-        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a").click()
+        with allure.step("Вводим новое название New Card Title"):
+            card_title_field.send_keys("New Card Title")
+            with allure.step("Нажимаем Enter"):
+                card_title_field.send_keys(Keys.RETURN)
+        with allure.step("Закрываем окно редактирования"):
+            WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a")))
+            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a").click()
     
 
     @allure.step("Перечещаем карточку на другой лист")
@@ -105,24 +114,33 @@ class TrelloPage:
     @allure.step("Удаляем карточку")
     def delete_card(self):
         WebDriverWait(self.__driver, 10)
-        card_title = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[2]/div/div[2]/a/div[3]")
-        card_title.click()
-        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[5]/div[5]/div[1]/a[4]").click()
+        with allure.step("Нажимаем на карточку"):
+            card_title = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[2]/div/div[2]/a/div[3]")
+            card_title.click()
+        with allure.step("В открывшемся меню нажимем на Архивировать"):
+            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[5]/div[5]/div[1]/a[4]").click()
+            WebDriverWait(self.__driver, 10)
+            with allure.step("В открывшемся меню нажимем на Удалить"):
+                self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[5]/div[5]/div[1]/a[6]").click()
         WebDriverWait(self.__driver, 10)
-        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[5]/div[5]/div[1]/a[6]").click()
-        WebDriverWait(self.__driver, 10)
-        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a").click()
-        time.sleep(2)
+        with allure.step("Закрываем окно редактирования карточки"):
+            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a").click()
+            time.sleep(2)
 
     @allure.step("Удаляем доску")
     def delete_board(self):
         WebDriverWait(self.__driver, 10).until(EC.visibility_of_any_elements_located((By.XPATH, "//*[@id='content']/div/div[1]/div[1]/div/div/span[2]/button[2]/span/span")))
-        self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div[1]/div[1]/div/div/span[2]/button[2]/span/span").click()
-        self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div[2]/div/div/div[2]/div/ul/li[16]/a").click()
-        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/div/input").click()
-        WebDriverWait(self.__driver, 10).until(EC.visibility_of_any_elements_located((By.XPATH, "//*[@id='content']/div/div/div/div/div/div[2]/button")))
-        self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div/div[2]/button").click()
-        go_to_main = self.__driver.get("https://trello.com/u/viktorbudnik/boards")
+        with allure.step("Нажимаем на кнопку Меню в шапке сайта"):
+            self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div[1]/div[1]/div/div/span[2]/button[2]/span/span").click()
+        with allure.step("Нажимаем кнопку закрыть доску"):   
+            self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div[2]/div/div/div[2]/div/ul/li[16]/a").click()
+        with allure.step("Нажимаем кнопку закрыть доску"):   
+            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/div/input").click()
+            WebDriverWait(self.__driver, 10).until(EC.visibility_of_any_elements_located((By.XPATH, "//*[@id='content']/div/div/div/div/div/div[2]/button")))
+            with allure.step("Нажимаем кнопку Закрыть"):
+                self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div/div[2]/button").click()
+        with allure.step("Возвращаемся к списку досок"):
+            self.__driver.get("https://trello.com/u/viktorbudnik/boards")
 
     @allure.step("Проверяем, что список досок пустой")
     def check_empty_board_list(self):
