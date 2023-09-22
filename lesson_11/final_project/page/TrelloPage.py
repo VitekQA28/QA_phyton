@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
-import pytest
+import time
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
@@ -68,54 +68,66 @@ class TrelloPage:
     @allure.step("Создать новую карточку в первом листе")    
     def add_new_card(self):
         WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea")))
-        name_card = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea").send_keys("Test_card 1")
+        self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea").send_keys("Test_card 1")
         WebDriverWait(self.__driver, 10)
-        resp = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[2]/div/input").click()
+        self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[2]/div/input").click()
 
     @allure.step("Именяем название карточки")      
     def update_name(self):
         card_title = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/a/div[3]")
         card_title.click()
-        WebDriverWait(self.__driver, 10)
+        WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[3]/div[1]/textarea")))
         card_title_field = self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[3]/div[1]/textarea")
         card_title_field.click()
+        time.sleep(2)
         card_title_field.clear()
+        time.sleep(2)
         card_title_field.send_keys("New Card Title")
         card_title_field.send_keys(Keys.RETURN)
-        WebDriverWait(self.__driver, 10)
+        WebDriverWait(self.__driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a")))
         self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a").click()
+    
 
-    @pytest.mark.skip
     @allure.step("Перечещаем карточку на другой лист")
     def move_card_to_list(self):
-        with allure.step("Открываем действия со списком"):
-            self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[1]/div[2]").click()
         WebDriverWait(self.__driver, 10)
-        with allure.step("Нажимаем Переместить список"):
-            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/div/ul[1]/li[3]/a").click()
+        with allure.step("Находим первый список"):
+            self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]")
+        with allure.step("Находим карточку в первом списке"):
+            card = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/a/div[3]")
+        with allure.step("Находим второй список"):
+            target_list = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[2]")
+        with allure.step(" Перемещаем карточку из первого списка во второй список"):
+            actions = ActionChains(self.__driver)
+            actions.drag_and_drop(card, target_list)
+            actions.perform()
+
+    @allure.step("Удаляем карточку")
+    def delete_card(self):
         WebDriverWait(self.__driver, 10)
-        with allure.step("Находим список, в который нужно переместить карточку"):
-            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/form/div[2]/div/select").click()
+        card_title = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[2]/div/div[2]/a/div[3]")
+        card_title.click()
+        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[5]/div[5]/div[1]/a[4]").click()
         WebDriverWait(self.__driver, 10)
-        with allure.step("Нажимаем на номер списка"):
-            #self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/form/div[2]/div/select/option[2]").click()
-            self.__driver.find_element(By.CSS_SELECTOR, ".js-select-list-pos > option[value='2']").click()
+        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[5]/div[5]/div[1]/a[6]").click()
         WebDriverWait(self.__driver, 10)
-        with allure.step("Нажимаем Переместить"):
-            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/form/input").click()
+        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a").click()
+        time.sleep(2)
+
+    @allure.step("Удаляем доску")
+    def delete_board(self):
+        WebDriverWait(self.__driver, 10).until(EC.visibility_of_any_elements_located((By.XPATH, "//*[@id='content']/div/div[1]/div[1]/div/div/span[2]/button[2]/span/span")))
+        self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div[1]/div[1]/div/div/span[2]/button[2]/span/span").click()
+        self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div[2]/div/div/div[2]/div/ul/li[16]/a").click()
+        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/div/input").click()
+        WebDriverWait(self.__driver, 10).until(EC.visibility_of_any_elements_located((By.XPATH, "//*[@id='content']/div/div/div/div/div/div[2]/button")))
+        self.__driver.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div/div[2]/button").click()
+        go_to_main = self.__driver.get("https://trello.com/u/viktorbudnik/boards")
+
+    @allure.step("Проверяем, что список досок пустой")
+    def check_empty_board_list(self):
+    # Находим все элементы, представляющие доски
+        board_elements = self.__driver.find_elements(By.XPATH, "//div[@class='board-tile']")
     
-    def move_card_to_list(self):
-        WebDriverWait(self.__driver, 10)
-        # Находим первый список
-        self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]")
-
-        # Находим карточку в первом списке
-        card = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/a/div[3]")
-
-        # Находим второй список
-        target_list = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[2]")
-
-        # Перемещаем карточку из первого списка во второй список
-        actions = ActionChains(self.__driver)
-        actions.drag_and_drop(card, target_list)
-        actions.perform()
+    # Проверяем, что количество элементов равно 0
+        assert len(board_elements) == 0, "Список досок не пустой"

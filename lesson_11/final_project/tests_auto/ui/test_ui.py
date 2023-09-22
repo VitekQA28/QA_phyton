@@ -38,20 +38,22 @@ def test_create_board(browser, board_name, test_data: dict):
     base_url = test_data.get("base_url") 
     token = test_data.get("token") 
     trello_page = TrelloPage(browser, base_url, token)
-
     with allure.step("Перейти на страницу авторизации и создать доску"):
         trello_page.go_and_create_board(board_name)
-
     with allure.step("Проверить, что доска успешно создана"):
         assert trello_page.is_board_created(board_name)
-
     with allure.step("Добавляем новую карточку"):
         trello_page.add_new_card()
     with allure.step("Меняем название карточки"):    
         trello_page.update_name()
     with allure.step("Перемещаем карточку"):  
         trello_page.move_card_to_list()
+    with allure.step("Удаляем карточку"):  
+        trello_page.delete_card()
+    with allure.step("Удаляем доску"):
+        trello_page.delete_board()
+    with allure.step("Проверяем, что список досок пуст"):
+        trello_page.check_empty_board_list()
 
 
-
-    time.sleep(100)
+    time.sleep(5)
