@@ -6,8 +6,6 @@ import pytest
 from page.TrelloPage import TrelloPage
 
 
-
-@pytest.mark.skip
 @pytest.mark.ui_test
 def test_auth(browser, test_data:dict):
     email = test_data.get("email")
