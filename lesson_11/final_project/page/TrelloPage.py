@@ -1,8 +1,9 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
+import pytest
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
-
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 import allure
@@ -23,6 +24,7 @@ class TrelloPage:
             "name" : "token",
             "value" : self.token
             }
+        WebDriverWait(self.__driver, 10)
         self.__driver.add_cookie(cookie)
         self.open_create_form()
         self.choose_option()
@@ -69,9 +71,21 @@ class TrelloPage:
         name_card = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[1]/div/textarea").send_keys("Test_card 1")
         WebDriverWait(self.__driver, 10)
         resp = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/div/div[2]/div/input").click()
-        
 
+    @allure.step("Именяем название карточки")      
+    def update_name(self):
+        card_title = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/a/div[3]")
+        card_title.click()
+        WebDriverWait(self.__driver, 10)
+        card_title_field = self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/div/div[3]/div[1]/textarea")
+        card_title_field.click()
+        card_title_field.clear()
+        card_title_field.send_keys("New Card Title")
+        card_title_field.send_keys(Keys.RETURN)
+        WebDriverWait(self.__driver, 10)
+        self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[3]/div/div/a").click()
 
+    @pytest.mark.skip
     @allure.step("Перечещаем карточку на другой лист")
     def move_card_to_list(self):
         with allure.step("Открываем действия со списком"):
@@ -83,16 +97,25 @@ class TrelloPage:
         with allure.step("Находим список, в который нужно переместить карточку"):
             self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/form/div[2]/div/select").click()
         WebDriverWait(self.__driver, 10)
-        with allure.step("Находим список, в который нужно переместить карточку"):
-            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/form/div[2]/div/select/option[2]").click()
+        with allure.step("Нажимаем на номер списка"):
+            #self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/form/div[2]/div/select/option[2]").click()
+            self.__driver.find_element(By.CSS_SELECTOR, ".js-select-list-pos > option[value='2']").click()
+        WebDriverWait(self.__driver, 10)
+        with allure.step("Нажимаем Переместить"):
+            self.__driver.find_element(By.XPATH, "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/form/input").click()
     
-        #with allure.step("Перемещаем карточку"):
-            
+    def move_card_to_list(self):
+        WebDriverWait(self.__driver, 10)
+        # Находим первый список
+        self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]")
 
+        # Находим карточку в первом списке
+        card = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[1]/div/div[2]/a/div[3]")
 
+        # Находим второй список
+        target_list = self.__driver.find_element(By.XPATH, "//*[@id='board']/div[2]")
 
-        #self.__driver.find_element(By.CSS_SELECTOR, "#user").send_keys(email)
-        #self.__driver.find_element(By.CSS_SELECTOR, "#login").click()
-        #WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "svg[role=presentation]")))
-        #self.__driver.find_element(By.CSS_SELECTOR, "#password").send_keys(password)
-        #self.__driver.find_element(By.CSS_SELECTOR, "#login-submit").click()
+        # Перемещаем карточку из первого списка во второй список
+        actions = ActionChains(self.__driver)
+        actions.drag_and_drop(card, target_list)
+        actions.perform()

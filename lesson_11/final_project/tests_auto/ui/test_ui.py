@@ -35,8 +35,8 @@ def test_auth(browser, test_data:dict):
 @pytest.mark.ui_test
 @pytest.mark.parametrize("board_name", ["Test Board 1"])
 def test_create_board(browser, board_name, test_data: dict):
-    base_url = test_data.get("base_url") # "https://trello.com/u/viktorbudnik/boards"
-    token = test_data.get("token") #"634e5e18c2571b0467a1e4a1/ATTSxiXkUOtI9qaunq65ufLDIFvBGCuZDhYCFToNQGkwCK9s8RmoDo9st5jl6opBh6YCAC89E034" 
+    base_url = test_data.get("base_url") 
+    token = test_data.get("token") 
     trello_page = TrelloPage(browser, base_url, token)
 
     with allure.step("Перейти на страницу авторизации и создать доску"):
@@ -47,7 +47,11 @@ def test_create_board(browser, board_name, test_data: dict):
 
     with allure.step("Добавляем новую карточку"):
         trello_page.add_new_card()
-
+    with allure.step("Меняем название карточки"):    
+        trello_page.update_name()
+    with allure.step("Перемещаем карточку"):  
         trello_page.move_card_to_list()
+
+
 
     time.sleep(100)
