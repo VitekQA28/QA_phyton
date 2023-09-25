@@ -33,9 +33,11 @@ class Registration:
     @allure.step("Регистрируем пользователя с валидными данными")
     def login_as(self, name ="Test", gender = "Мужской", phone = "9024657539", password = "Test123456")->str:
         WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[2]/div/div[1]/div/div")))
-        self.__driver.find_element(By.XPATH, "//*[@id='authForm_fv402gn8']/form/div[3]/div/a[2]").click()
-        WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[4]/main/div[2]")))
-        self.__driver.find_element(By.XPATH, "//*[@id='NAME']").send_keys(name)
+        with allure.step("Нажимаем кнопку 'Зарегистрироваться'"):
+            self.__driver.find_element(By.XPATH, "//*[@id='authForm_fv402gn8']/form/div[3]/div/a[2]").click()
+            WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[4]/main/div[2]")))
+            with allure.step("Заполняем поле Имя значением {name}"):
+                self.__driver.find_element(By.XPATH, "//*[@id='NAME']").send_keys(name)
         self.__driver.find_element(By.XPATH, "//*[@id='registrationCKnVzT']/div/form/div[8]/div/div/label[1]").send_keys(phone)
         self.__driver.find_element(By.XPATH, "//*[@id='PERSONAL_GENDER']").send_keys(gender)
         self.__driver.find_element(By.XPATH, "//*[@id='PASSWORD']").send_keys(password)
