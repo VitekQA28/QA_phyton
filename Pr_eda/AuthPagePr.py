@@ -44,7 +44,7 @@ class AuthPagePr:
         
 
     @allure.step("Получаем данные о пользователе")
-    def get_accautnt_info(self) -> list[str]:
+    def get_accautnt_info(self) -> str:
         # Открываем страницу личного кабинета
         self.__driver.get("https://prostayaeda.s2.citruspro.ru/personal")
         WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[4]/main/div[2]")))
@@ -52,6 +52,11 @@ class AuthPagePr:
         name = self.__driver.find_element(By.XPATH, "//*[@id='citrusFormsIblockElement_b7580068da00bffc99fa526470b7d50e']/div[1]/div[1]/h2").text       
         # Возвращаем значение
         return name
+    
+    @allure.step("Выходим из аккаунта")
+    def exit_accautnt(self):
+        self.__driver.find_element(By.XPATH, "/html/body/div[4]/main/div[1]/nav/ul/li[3]/a").click()
+    
         
     @allure.step("Закрываем браузер")
     def close(self):

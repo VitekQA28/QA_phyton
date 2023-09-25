@@ -19,5 +19,6 @@ def test_auth():
             assert "/personal" in current_url
         with allure.step("Проверка данных пользователя"):
             assert actual_name == "Budnik Viktornik"
+    main_page.exit_accautnt()
     main_page.close()
     
