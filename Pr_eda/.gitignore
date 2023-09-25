@@ -3,6 +3,10 @@
 
 ### Python ###
 
+allure*
+allure-files/
+allure-report/
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
