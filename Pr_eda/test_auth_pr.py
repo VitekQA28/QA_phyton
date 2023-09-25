@@ -1,4 +1,4 @@
-from AuthPagePr import AuthPagePr
+from page.AuthPagePr import AuthPagePr
 import allure
 import pytest
 
