@@ -42,7 +42,6 @@ class AuthPagePr:
     def get_current_url(self):
         return self.__driver.current_url
         
-
     @allure.step("Получаем данные о пользователе")
     def get_accautnt_info(self) -> str:
         # Открываем страницу личного кабинета
@@ -56,8 +55,7 @@ class AuthPagePr:
     @allure.step("Выходим из аккаунта")
     def exit_accautnt(self):
         self.__driver.find_element(By.XPATH, "/html/body/div[4]/main/div[1]/nav/ul/li[3]/a").click()
-    
-        
+       
     @allure.step("Закрываем браузер")
     def close(self):
         self.__driver.quit()
